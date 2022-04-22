@@ -1,12 +1,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
+
+void pegandoBit(unsigned char aleatorio,  unsigned char armarios){
+    unsigned char armarioElemento;
+    armarioElemento = armarios >> aleatorio;
+    armarioElemento = armarioElemento << 7;
+    armarioElemento = armarioElemento >> 7;
+
+   taOcupado(armarioElemento, armarios, aleatorio);
+}
+
+// verificando se Ta ocupado
+int taOcupado( unsigned char armarioElemento, unsigned char armarios, unsigned char aleatorio ){
+    // não está ocupado
+    printf("entrei aqui \n");
+     if(!(armarioElemento && 1)){
+        // trocando o bit na posição correta caso a posição não esteja
+        armarioElemento = 0b000000001;
+        armarioElemento = armarioElemento << aleatorio;
+        armarios = armarios | armarioElemento;
+        printf("%d", armarios);  
+        return armarios;
+    } else{
+        // se tiver está ocupado ele vai somar + 1 para pegar o proxuimo elemento
+
+        // ele vai vasculhar os elementos depois do numero sorteado
+        // se não encontrar nada nehum armario vago depoi dos numeros sorteado
+        // ele vai voltar pro inicio e começar a vasculhar até achar um armario que esteja vago;
+        aleatorio = (aleatorio+1) > 7 ? (aleatorio + 1): - (-aleatorio + 1);
+        pegandoBit(aleatorio, armarios);
+    }
+}
 int main(){
     // armarios
-    unsigned char armarios = 0b00100100;
+    unsigned char armarios = 0b00010000;
     unsigned char auxArmario;
-    int aleatorio;
+    unsigned char aleatorio;
 
+    if(armarios == 255){
+        printf("Todos os armarios estão ocupado: \n");
+        return 0;
+    }
+  
     // escolher armario aleatorioamente
     // escolher um numero aleatorio entre 1 e 8;
     srand((unsigned)time(NULL));
@@ -14,49 +51,9 @@ int main(){
     printf("%d \n", aleatorio);
 
     // pegando o bit da posição sorteada
-    auxArmario = armarios >> aleatorio;
-    auxArmario = auxArmario << 7;
-    auxArmario = auxArmario >> 7;
+    pegandoBit(aleatorio, armarios);
 
-    // veriricando se o bit já está ocupado
-    if(auxArmario && 1){
-        printf("Armario na posição %d está ocupado \n", aleatorio);
-    } else{
-          // trocando o bit na posição correta caso a posição não esteja
-        auxArmario = 0b000000001;
-        auxArmario = auxArmario << aleatorio;
-        armarios = armarios | auxArmario;
-        printf("%d", armarios);
-    }
-    
-        // switch (aleatorio)
-        // {
-        // case 1:
-        //     // se for um numero impar o ultimo bit estará ocupada
-        //     if(armarios % 2){
-        //         printf("%d", armarios);
-        //     }
-        //     break;
-        // case 2:
-        //     // verificando se o bit na posição 2 está ocupado
-        //     // vou mover o duas devezes até o bit da posição 2 ( que no casa vai ser o armario 2);
-        //     auxArmario  = armarios >> 2;
-        //     if(auxArmario % 2){
-        //         printf("%d \n", auxArmario);
-        //     }   
-        //     break;
-        
-        // case 3:
-        //      // verificando se o bit na posição 2 está ocupado
-        //     // vou mover o duas devezes até o bit da posição 2 ( que no casa vai ser o armario 2);
-        //     auxArmario  = armarios >> 2;
-        //     if(auxArmario % 2){
-        //         printf("%d \n", auxArmario);
-        //     }   
-        //     break;
-        // default:
-        //     break;
-        // }
 
+      
     return 0;
 }
