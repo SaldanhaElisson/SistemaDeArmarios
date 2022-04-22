@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-
+// pegando o bit da posição sorteado
 void pegandoBit(unsigned char aleatorio,  unsigned char armarios){
     unsigned char armarioElemento;
     armarioElemento = armarios >> aleatorio;
@@ -27,12 +27,13 @@ int taOcupado( unsigned char armarioElemento, unsigned char armarios, unsigned c
         // se tiver está ocupado ele vai somar + 1 para pegar o proxuimo elemento
 
         // ele vai vasculhar os elementos depois do numero sorteado
-        // se não encontrar nada nehum armario vago depoi dos numeros sorteado
+        // se não encontrar nada nehum armario vago depois dos numeros sorteado
         // ele vai voltar pro inicio e começar a vasculhar até achar um armario que esteja vago;
         aleatorio = (aleatorio+1) > 7 ? (aleatorio + 1): - (-aleatorio + 1);
         pegandoBit(aleatorio, armarios);
     }
 }
+
 int main(){
     // armarios
     unsigned char armarios = 0b00010000;
